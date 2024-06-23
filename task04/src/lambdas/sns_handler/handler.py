@@ -13,7 +13,11 @@ class SnsHandler(AbstractLambda):
         """
         Explain incoming event here
         """
+        e = event
         print(event)
+        a = 1
+        b = 1 + a
+        e = b
         return 200
     
 
