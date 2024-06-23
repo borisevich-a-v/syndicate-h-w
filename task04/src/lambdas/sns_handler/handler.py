@@ -1,10 +1,10 @@
 from commons.log_helper import get_logger
 from commons.abstract_lambda import AbstractLambda
 
-_LOG = get_logger('SqsHandler-handler')
+_LOG = get_logger('SnsHandler-handler')
 
 
-class SqsHandler(AbstractLambda):
+class SnsHandler(AbstractLambda):
 
     def validate_request(self, event) -> dict:
         pass
@@ -17,7 +17,7 @@ class SqsHandler(AbstractLambda):
         return 200
     
 
-HANDLER = SqsHandler()
+HANDLER = SnsHandler()
 
 
 def lambda_handler(event, context):
