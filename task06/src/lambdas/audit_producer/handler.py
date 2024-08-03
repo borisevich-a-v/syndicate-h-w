@@ -1,5 +1,6 @@
 import json
 import uuid
+from datetime import datetime
 
 from commons.log_helper import get_logger
 from commons.abstract_lambda import AbstractLambda
@@ -27,13 +28,16 @@ class AuditProducer(AbstractLambda):
         item_key = record['Keys']['key']['S']
         _LOG.info("item_key: %s", item_key)
 
-        value = record['NewImage']['value']['N']
+        value = int(record['NewImage']['value']['N'])
+        _LOG.info("value: %s", value)
+
+        date_and_time = datetime.fromtimestamp(record['ApproximateCreationDateTime']).isoformat()
         _LOG.info("value: %s", value)
 
         event_item = {
             'id': str(uuid.uuid4()),
             'itemKey': item_key,
-            'modificationTime': int(record['ApproximateCreationDateTime']),
+            'modificationTime': date_and_time,
             'newValue': {'key': item_key, 'value': value}
         }
         _LOG.info("value: %s", event)
