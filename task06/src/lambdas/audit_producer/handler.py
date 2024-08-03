@@ -35,12 +35,24 @@ class AuditProducer(AbstractLambda):
         iso_format_with_ms = str(dt_obj.strftime('%Y-%m-%dT%H:%M:%S.%f'))
         _LOG.info("value: %s", iso_format_with_ms)
 
-        event_item = {
-            'id': str(uuid.uuid4()),
-            'itemKey': item_key,
-            'modificationTime': iso_format_with_ms,
-            'newValue': {'key': item_key, 'value': value}
-        }
+        old_image = record.get('OldImage')
+        if old_image:
+            event_item = {
+                'id': str(uuid.uuid4()),
+                'itemKey': item_key,
+                'modificationTime': iso_format_with_ms,
+                "updatedAttribute": "value",
+                "oldValue": old_image['value']['N'],
+                'newValue': value,
+            }
+        else:
+            event_item = {
+                'id': str(uuid.uuid4()),
+                'itemKey': item_key,
+                'modificationTime': iso_format_with_ms,
+                'newValue': {'key': item_key, 'value': value}
+            }
+
         _LOG.info("value: %s", event)
 
         _LOG.info("audit table: %s", audit_table)
