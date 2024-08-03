@@ -36,6 +36,7 @@ class TestSuccess(AuditProducerLambdaTestCase):
                     "eventSourceARN": "arn:aws:dynamodb:eu-central-1:905418349556:table/cmtr-c4f5c11f-Configuration/stream/2024-08-03T08:58:04.429"
                 }
             ]
+
         }
 
         # self.HANDLER.handle_request(event, Mock())
