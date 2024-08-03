@@ -42,7 +42,7 @@ class AuditProducer(AbstractLambda):
                 'itemKey': item_key,
                 'modificationTime': iso_format_with_ms,
                 "updatedAttribute": "value",
-                "oldValue": old_image['value']['N'],
+                "oldValue": int(old_image['value']['N']),
                 'newValue': value,
             }
         else:
