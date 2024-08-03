@@ -10,14 +10,14 @@
   "lambda_path": "lambdas/audit_producer",
   "dependencies": [
     {
-      "resource_name": "${conf_table}",
+      "resource_name": "Configuration",
       "resource_type": "dynamodb_table"
     }
   ],
   "event_sources": [
     {
       "resource_type": "dynamodb_trigger",
-      "target_table": "${conf_table}",
+      "target_table": "Configuration",
       "batch_size": 1,
       "function_response_types": [
         "ReportBatchItemFailures"
@@ -25,8 +25,7 @@
     }
   ],
   "env_variables": {
-    "conf_table_name": "${conf_table}",
-    "audit_table_name": "${audit_table}"
+    "audit_table_name": "${target_table}"
   },
   "url_config": {},
   "ephemeral_storage": 512,

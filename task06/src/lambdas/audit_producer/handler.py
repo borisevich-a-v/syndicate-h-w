@@ -1,6 +1,5 @@
 import json
 import uuid
-from datetime import datetime
 
 from commons.log_helper import get_logger
 from commons.abstract_lambda import AbstractLambda
@@ -9,12 +8,9 @@ import os
 
 _LOG = get_logger('AuditProducer-handler')
 dynamodb = boto3.resource('dynamodb')
-conf_table_name = os.getenv("conf_table_name") or 'Configuration'
-audit_table_name = os.getenv("audit_table_name") or 'Audit'
+audit_table_name = os.getenv("audit_table_name") or 'cmtr-c4f5c11f-Audit'
 
-conf_table = dynamodb.Table(conf_table_name)
 audit_table = dynamodb.Table(audit_table_name)
-
 
 
 class AuditProducer(AbstractLambda):
@@ -23,19 +19,26 @@ class AuditProducer(AbstractLambda):
         pass
         
     def handle_request(self, event, context):
+        _LOG.info("Start my code")
 
         record = event['Records'][0]['dynamodb']
+        _LOG.info("Got record: %s", record)
 
         item_key = record['Keys']['key']['S']
-        value = record['NewImage']['value']['N']
+        _LOG.info("item_key: %s", item_key)
 
+        value = record['NewImage']['value']['N']
+        _LOG.info("value: %s", value)
 
         event_item = {
             'id': str(uuid.uuid4()),
             'itemKey': item_key,
-            'modificationTime': record['ApproximateCreationDateTime'],
+            'modificationTime': int(record['ApproximateCreationDateTime']),
             'newValue': {'key': item_key, 'value': value}
         }
+        _LOG.info("value: %s", event)
+
+        _LOG.info("audit table: %s", audit_table)
 
         audit_table.put_item(Item=event_item)
 
