@@ -31,13 +31,14 @@ class AuditProducer(AbstractLambda):
         value = int(record['NewImage']['value']['N'])
         _LOG.info("value: %s", value)
 
-        date_and_time = datetime.fromtimestamp(record['ApproximateCreationDateTime']).isoformat()
-        _LOG.info("value: %s", value)
+        dt_obj = datetime.fromtimestamp(record['ApproximateCreationDateTime'])
+        iso_format_with_ms = str(dt_obj.strftime('%Y-%m-%dT%H:%M:%S.%f'))
+        _LOG.info("value: %s", iso_format_with_ms)
 
         event_item = {
             'id': str(uuid.uuid4()),
             'itemKey': item_key,
-            'modificationTime': date_and_time,
+            'modificationTime': iso_format_with_ms,
             'newValue': {'key': item_key, 'value': value}
         }
         _LOG.info("value: %s", event)
