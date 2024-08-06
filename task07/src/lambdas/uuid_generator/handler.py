@@ -1,6 +1,8 @@
 import json
 import os
 import uuid
+from datetime import datetime
+
 import boto3
 from commons.log_helper import get_logger
 from commons.abstract_lambda import AbstractLambda
@@ -20,7 +22,7 @@ class UuidGenerator(AbstractLambda):
         """
         Explain incoming event here
         """
-        file_name = event['time']
+        file_name = datetime.strptime(event['time'], "%Y-%m-%dT%H:%M:%SZ").strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
         content_dict = {
             'ids': [str(uuid.uuid4()) for _ in range(10)]
         }
