@@ -17,6 +17,7 @@ class UuidGenerator(AbstractLambda):
 
     def validate_request(self, event) -> dict:
         pass
+        pass
 
     def handle_request(self, event, context):
         """
