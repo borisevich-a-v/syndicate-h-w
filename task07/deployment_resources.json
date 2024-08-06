@@ -44,15 +44,17 @@
         {
           "Action": "s3:PutObject",
           "Principal": "*",
-          "Resource": "arn:aws:s3:::cmtr-c4f5c11f-uuid-storage/*",
+          "Resource": [
+            "arn:aws:s3:::${target_bucket}/*"
+          ],
           "Effect": "Allow",
           "Sid": "1"
         }
       ]
     },
     "public_access_block": {
-      "block_public_acls": false,
-      "ignore_public_acls": false,
+      "block_public_acls": true,
+      "ignore_public_acls": true,
       "block_public_policy": true,
       "restrict_public_buckets": true
     }
